@@ -8,8 +8,7 @@ module.exports = {
   cooldown: 10,
   execute(message, args, cmd, client, discord) {
 
-    const channel = message.guild.channels.cache.find(c => c.name === 'sugestões');
-    if (!channel) return message.channel.send('O canal de sugestões ainda não existe');
+    const botChannel = message.guild.channels.cache.find(c => c.name === '🤖┃smash_bots');
 
     const jogosMapeados = {
       'ultimate': ENV.ULTIMATE_CLIENT_ID,
@@ -81,7 +80,7 @@ module.exports = {
     let msgFinal = mensagens[idxMensagem];
     msgFinal = (qtdArgs == 2) ? msgFinal + `Link do Parsec ${args[1]}\n` : msgFinal;
 
-    message.channel.send(msgFinal).then(msg => {
+    botChannel.send(msgFinal).then(msg => {
       msg.react('🖥');
       message.delete();
     }).catch((err) => {
