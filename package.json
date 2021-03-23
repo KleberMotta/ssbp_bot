@@ -1,16 +1,20 @@
 {
-  "name": "discordbot",
+  "name": "ssbp_bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "A personal discord bot",
   "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js",
+    "devStart": "nodemon main.js"
+  },
+  "author": "Kleber Motta",
+  "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Kleber Motta",
-  "license": "ISC"
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
 }
