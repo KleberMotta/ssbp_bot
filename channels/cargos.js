@@ -52,7 +52,7 @@ module.exports = {
 
         for (const emoji in emojiRoleMapping) {
           const currentRole = emojiRoleMapping[emoji];
-          if (!reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
+          if (!await reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
 
           const roleName = currentRole.name;
           if (roleName === hostRole.name || roleName === clientRole.name) continue;
@@ -66,7 +66,7 @@ module.exports = {
 
         for (const emoji in emojiRoleMapping) {
           const currentRole = emojiRoleMapping[emoji];
-          if (!reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
+          if (!await reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
 
           const roleName = currentRole.name;
           if (roleName === hostRole.name || roleName === clientRole.name) continue;
@@ -81,7 +81,6 @@ module.exports = {
         await reaction.message.guild.members.cache.get(user.id).roles.add(receivedRole);
       }
     } catch (err) {
-      message.channel.send('Desculpe, algo deu errado');
       console.log(err);
     }
 
@@ -120,7 +119,7 @@ module.exports = {
 
         for (const emoji in emojiRoleMapping) {
           const currentRole = emojiRoleMapping[emoji];
-          if (!reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
+          if (!await reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
 
           const roleName = currentRole.name;
           if (roleName === hostRole.name || roleName === clientRole.name) continue;
@@ -134,7 +133,7 @@ module.exports = {
 
         for (const emoji in emojiRoleMapping) {
           const currentRole = emojiRoleMapping[emoji];
-          if (!reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
+          if (!await reaction.message.guild.members.cache.get(user.id).roles.cache.has(currentRole.id)) continue;
 
           const roleName = currentRole.name;
           if (roleName === hostRole.name || roleName === clientRole.name) continue;
@@ -149,7 +148,6 @@ module.exports = {
         await reaction.message.guild.members.cache.get(user.id).roles.remove(receivedRole);
       }
     } catch (err) {
-      message.channel.send('Desculpe, algo deu errado');
       console.log(err);
     }
   }
