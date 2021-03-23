@@ -1,7 +1,5 @@
 module.exports = {
   name: 'sugestão',
-  permissions: [],
-  cooldown: 5,
   description: 'cria uma sugestão',
   execute(message, args, cmd, client, discord) {
     const channel = message.guild.channels.cache.find(c => c.name === '🧠┃sugestões');
