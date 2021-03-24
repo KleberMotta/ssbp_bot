@@ -5,6 +5,8 @@ const ENV = process.env;
 module.exports = {
   name: 'interessesroles',
   description: 'Adicionar um determinado cargo',
+  cooldoww: 0,
+  public: false,
   async execute(message, args, cmd, client, discord) {
 
     if (!message.member.roles.cache.has(`${ENV.ADM_ROLE_ID}`)) {

@@ -5,7 +5,19 @@ const ENV = process.env;
 module.exports = {
   name: 'host',
   description: 'Comando pra Host chamar os Clients pra jogar',
-  cooldown: 10,
+  cooldown: 5,
+  public: true,
+  help: 'O comando !host tem dois argumentos, um obrigatório e outro opcional, respectivamente, ex.: !host <nome do jogo> <link do parsec?>. '
+    + 'O primeiro é o nome do jogo e, para o comando funcionar corretamente você precisa usar um dos nomes de jogos válidos, são eles: \n'
+    + '- ultimate;\n'
+    + '- sm4sh;\n'
+    + '- fan;\n'
+    + '- brawl;\n'
+    + '- melee;\n'
+    + '- 64;\n'
+    + 'O segundo parâmetro opcional seria o link de host do Parsec. '
+    + 'Caso continue com dúvidas peça ajuda no <#798001149047209994> ou <#797997302681436200>.\n',
+  exemple: '!host sm4sh ou !host ultmate <link parsec>',
   async execute(message, args, cmd, client, discord) {
 
     const ultimateChannel = message.guild.channels.cache.find(c => c.name === '⚪┃ultimate_links');
@@ -38,13 +50,19 @@ module.exports = {
     };
 
     if (!message.member.roles.cache.has(ENV.HOST_ROLE_ID)) {
-      message.channel.send('Foi mal, você precisa ter o cargo de Host pra fazer isso');
+      message.channel.send('Você precisa ter o cargo de Host pra fazer isso');
       return;
     } else if (args.length === 0) {
       message.channel.send('Opa! Você esqueceu de dizer qual jogo quer Hospedar. Ex.: !host Ultimate');
       return;
+    } else if (args[0] === 'help') {
+      message.channel.send(this.help);
+      return;
     } else if (args.length > 2) {
       message.channel.send('Esse comando não aceita mais de dois argumentos. Na dúvida use "!host help" pra mais detalhes');
+      return;
+    } else if (args.length > 1 && !(args[1].length >= 56 && args[1].substr(0, 20) === 'https://parsec.gg/g/')) {
+      message.channel.send(`Parece que seu link do Parsec está incorreto, dá uma conferida => ${args[1]}`);
       return;
     } else if (!jogosMapeados[args[0].toLowerCase()]) {
       message.channel.send('Eita, esse jogo não é válido. Escolha um jogo válido: \n'
@@ -58,19 +76,6 @@ module.exports = {
       return;
     } else if (args.length > 1 && !(args[1].length >= 56 && args[1].substr(0, 20) === 'https://parsec.gg/g/')) {
       message.channel.send(`Parece que seu link do Parsec está incorreto, dá uma conferida => ${args[1]}`);
-      return;
-    } else if (args[0] === 'help') {
-      message.channel.send('O comando !host tem dois argumentos, um obrigatório e outro opcional, respectivamente, ex.: !host <nome do jogo> <link do parsec?>. '
-        + 'O primeiro é o nome do jogo e, para o comando funcionar corretamente você precisa usar um dos nomes de jogos válidos, são eles: \n'
-        + '- ultimate;\n'
-        + '- sm4sh;\n'
-        + '- fan;\n'
-        + '- brawl;\n'
-        + '- melee;\n'
-        + '- 64;\n'
-        + 'O segundo parâmetro opcional seria o link de host do Parsec. '
-        + 'Caso continue com dúvidas peça ajuda no <#798001149047209994> ou <#797997302681436200>.\n'
-      );
       return;
     }
 

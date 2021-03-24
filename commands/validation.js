@@ -1,11 +1,16 @@
 require('dotenv').config();
 
-const ENV = process.env;
-
 module.exports = {
   name: 'validation',
   description: 'Ganhar acesso ao servidor',
+  cooldown: 0,
+  public: false,
   async execute(message, args, cmd, client, discord) {
+
+    if (args.length > 0 && args[0] === 'help') {
+      message.channel.send(this.help);
+      return;
+    }
 
     const membroEmoji = '👍';
 

@@ -50,6 +50,9 @@ module.exports = {
     if (args.length === 0) {
       message.channel.send('Opa! Você esqueceu de dizer qual jogo quer jogar. Ex.: !client ultimate');
       return;
+    } else if (args[0] === 'help') {
+      message.channel.send(this.help);
+      return;
     } else if (args.length > 1) {
       message.channel.send('Esse comando não aceita mais de um argumento. Na dúvida use "!client help" pra mais detalhes');
       return;
@@ -62,9 +65,6 @@ module.exports = {
         + '- melee;\n'
         + '- 64;\n'
       );
-      return;
-    } else if (args[0] === 'help') {
-      message.channel.send(this.help);
       return;
     }
 

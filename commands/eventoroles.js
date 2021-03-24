@@ -5,6 +5,8 @@ const ENV = process.env;
 module.exports = {
   name: 'eventoroles',
   description: 'Adicionar cargos de eventos do BOT',
+  cooldown: 0,
+  public: false,
   async execute(message, args, cmd, client, discord) {
 
     if (!message.member.roles.cache.has(`${ENV.ADM_ROLE_ID}`)) {
