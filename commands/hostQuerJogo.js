@@ -9,21 +9,32 @@ module.exports = {
   async execute(message, args, cmd, client, discord) {
 
     const ultimateChannel = message.guild.channels.cache.find(c => c.name === '⚪┃ultimate_links');
+    const ultimateChat = message.guild.channels.cache.find(c => c.name === '⚪┃ultimate_chat');
+
     const sm4shChannel = message.guild.channels.cache.find(c => c.name === '🟡┃sm4sh_links');
+    const sm4shChat = message.guild.channels.cache.find(c => c.name === '🟡┃sm4sh_chat');
+
     const fanChannel = message.guild.channels.cache.find(c => c.name === '🟠┃fan_links');
+    const fanChat = message.guild.channels.cache.find(c => c.name === '🟠┃fan_chat');
+
     const brawlChannel = message.guild.channels.cache.find(c => c.name === '🟤┃brawl_links');
+    const brawlChat = message.guild.channels.cache.find(c => c.name === '🟤┃brawl_chat');
+
     const meleeChannel = message.guild.channels.cache.find(c => c.name === '🟣┃melee_links');
+    const meleeChat = message.guild.channels.cache.find(c => c.name === '🟣┃melee_chat');
+
     const s64Channel = message.guild.channels.cache.find(c => c.name === '⚫┃64_links');
+    const s64Chat = message.guild.channels.cache.find(c => c.name === '⚫┃64_chat');
 
     const reactionEmoji = '👀';
 
     const jogosMapeados = {
-      'ultimate': [ENV.ULTIMATE_CLIENT_ID, ultimateChannel],
-      'sm4sh': [ENV.SM4SH_CLIENT_ID, sm4shChannel],
-      'fan': [ENV.FAN_CLIENT_ID, fanChannel],
-      'brawl': [ENV.BRAWL_CLIENT_ID, brawlChannel],
-      'melee': [ENV.MELEE_CLIENT_ID, meleeChannel],
-      '64': [ENV.S64_CLIENT_ID, s64Channel]
+      'ultimate': [ENV.ULTIMATE_CLIENT_ID, ultimateChannel, ultimateChat],
+      'sm4sh': [ENV.SM4SH_CLIENT_ID, sm4shChannel, sm4shChat],
+      'fan': [ENV.FAN_CLIENT_ID, fanChannel, fanChat],
+      'brawl': [ENV.BRAWL_CLIENT_ID, brawlChannel, brawlChat],
+      'melee': [ENV.MELEE_CLIENT_ID, meleeChannel, meleeChat],
+      '64': [ENV.S64_CLIENT_ID, s64Channel, s64Chat]
     };
 
     if (!message.member.roles.cache.has(ENV.HOST_ROLE_ID)) {
@@ -63,14 +74,12 @@ module.exports = {
       return;
     }
 
-
-
     const jogo = args[0].toLowerCase();
     const hostId = message.member.user.id;
     const idxMensagem = Math.floor(Math.random() * 5);
     const qtdArgs = args.length;
 
-    let [clientRole, gameChannel] = jogosMapeados[jogo];
+    let [clientRole, gameChannel, chatChannel] = jogosMapeados[jogo];
     let mensagens = [];
 
     let msg1 = `O Host <@${hostId}> tá chamando vocês pra jogar ${jogo}. Bora!\n\n`;
@@ -104,6 +113,32 @@ module.exports = {
       message.delete();
     } catch (err) {
       message.channel.send(`Parece que estou sem alguma permissão, no canal <#${gameChannel.id}>`);
+      console.log(`${this.name} command: `, err);
+    }
+
+    let usuarioJaReagiu = {};
+
+    try {
+      client.on('messageReactionAdd', async (reaction, user) => {
+
+        if (usuarioJaReagiu[user.id]) return;
+        if (reaction.message.partial) await reaction.message.fetch();
+        if (reaction.partial) await reaction.fetch();
+        if (user.bot) return;
+        if (!reaction.message.guild) return;
+        if (hostId === user.id) return;
+
+        usuarioJaReagiu[user.id] = true;
+
+        if (reaction.message.channel.id === gameChannel.id) {
+          if (reaction.emoji.name === reactionEmoji) {
+            await chatChannel.send(`Alô <@${hostId}>, o cliente <@${user.id}> quer jogar!`);
+          }
+        }
+
+      });
+    } catch (err) {
+      message.channel.send(`Parece que estou sem alguma permissão, no canal <#${chatChannel.id}>`);
       console.log(`${this.name} command: `, err);
     }
 
