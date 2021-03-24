@@ -29,7 +29,7 @@ module.exports = (Discord, client, message) => {
     if (current_time < expiration_time) {
       const time_left = (expiration_time - current_time) / 1000;
 
-      return message.reply(`Você precisa esfriar um pouco 🥶, espere ${time_left.toFixed(1)} segundos antes de usar ``${command.name}`` novamente`)
+      return message.reply(`Você precisa esfriar um pouco 🥶, espere ${time_left.toFixed(1)} segundos antes de usar o comando !${command.name} novamente`)
     }
   }
 
