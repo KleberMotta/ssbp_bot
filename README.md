@@ -1,4 +1,4 @@
-## Personal Discord Bot for Super Smash Bros. Parsec server
+## Personal Discord Bot - Super Smash Bros. Parsec Bot
 
 > Info about the bot
 
