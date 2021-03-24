@@ -12,8 +12,9 @@ module.exports = (Discord, client, message) => {
 
   const command = client.commands.get(cmd) || client.commands.find(a => a.aliases && a.aliases.includes(cmd));
 
-  //If cooldowns map doesn't have a command.name key then create one.
-  if (!cooldowns.has(command.name)) {
+  if (!command) {
+    console.log("Message Event: ", `Parece que o comando ${cmd} não existe`);
+  } else if (!cooldowns.has(command.name)) {
     cooldowns.set(command.name, new Discord.Collection());
   }
 
@@ -28,7 +29,7 @@ module.exports = (Discord, client, message) => {
     if (current_time < expiration_time) {
       const time_left = (expiration_time - current_time) / 1000;
 
-      return message.reply(`Eita! Você precisa esfriar um pouco 🥶, espere mais ${time_left.toFixed(1)} antes de usar ${command.name} novamente`)
+      return message.reply(`Você precisa esfriar um pouco 🥶, espere ${time_left.toFixed(1)} segundos antes de usar ``${command.name}`` novamente`)
     }
   }
 
@@ -40,6 +41,7 @@ module.exports = (Discord, client, message) => {
   try {
     command.execute(message, args, cmd, client, Discord);
   } catch (err) {
+    console.log("Message Handler: ", err);
     message.reply("Algo deu errado ao tentar executar esse comando, por favor reporte isso a algum ADM!");
     return;
   }
