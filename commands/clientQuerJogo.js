@@ -6,6 +6,16 @@ module.exports = {
   name: 'cliente',
   description: 'Comando pros clientes pergunterem pros Hosts se alguém quer jogar',
   cooldown: 10,
+  public: true,
+  help: 'O comando !client tem um argumento obrigatório, ex.: !client <nome do jogo>. '
+    + 'Pro comando funcionar corretamente você precisa usar um dos nomes de jogos válidos, são eles: \n'
+    + '- ultimate;\n'
+    + '- sm4sh;\n'
+    + '- fan;\n'
+    + '- brawl;\n'
+    + '- melee;\n'
+    + '- 64;\n',
+  exemple: '!cliente ultimate',
   async execute(message, args, cmd, client, discord) {
 
     const ultimateChannel = message.guild.channels.cache.find(c => c.name === '⚪┃ultimate_links');
@@ -29,12 +39,12 @@ module.exports = {
     const reactionEmoji = '🦄';
 
     const jogosMapeados = {
-      'ultimate': [ENV.ULTIMATE_CLIENT_ID, ultimateChannel, ultimateChat],
-      'sm4sh': [ENV.SM4SH_CLIENT_ID, sm4shChannel, sm4shChat],
-      'fan': [ENV.FAN_CLIENT_ID, fanChannel, fanChat],
-      'brawl': [ENV.BRAWL_CLIENT_ID, brawlChannel, brawlChat],
-      'melee': [ENV.MELEE_CLIENT_ID, meleeChannel, meleeChat],
-      '64': [ENV.S64_CLIENT_ID, s64Channel, s64Chat]
+      'ultimate': [ENV.ULTIMATE_HOST_ID, ultimateChannel, ultimateChat],
+      'sm4sh': [ENV.SM4SH_HOST_ID, sm4shChannel, sm4shChat],
+      'fan': [ENV.FAN_GAME_HOST_ID, fanChannel, fanChat],
+      'brawl': [ENV.BRAWL_HOST_ID, brawlChannel, brawlChat],
+      'melee': [ENV.MELEE_HOST_ID, meleeChannel, meleeChat],
+      '64': [ENV.S64_HOST_ID, s64Channel, s64Chat]
     };
 
     if (args.length === 0) {
@@ -54,15 +64,7 @@ module.exports = {
       );
       return;
     } else if (args[0] === 'help') {
-      message.channel.send('O comando !client tem um argumento obrigatório, ex.: !client <nome do jogo>. '
-        + 'Pro comando funcionar corretamente você precisa usar um dos nomes de jogos válidos, são eles: \n'
-        + '- ultimate;\n'
-        + '- sm4sh;\n'
-        + '- fan;\n'
-        + '- brawl;\n'
-        + '- melee;\n'
-        + '- 64;\n'
-      );
+      message.channel.send(this.help);
       return;
     }
 
@@ -80,7 +82,7 @@ module.exports = {
     const msg2 = `Um tal de <@${clientId}> mandou perguntar se algum ${reactionEmoji} pode hospedar ${jogo}, bora?\n\n`;
     mensagens.push(msg2);
 
-    const msg3 = `Eae pessoal! O <@${clientId}> quer saber se querem jogar um pouco de ${jogo}.\n\n`;
+    const msg3 = `Eae pessoal! O <@${clientId}> quer saber se querem hospedar um pouco de ${jogo}.\n\n`;
     mensagens.push(msg3);
 
     const msg4 = `Comunicado! O nobre cliente <@${clientId}> respeitosamente os questiona sobre a possibilidade de hospedarem o ${jogo} pra jogarem. Obrigado pela atenção!\n\n`;
@@ -118,9 +120,13 @@ module.exports = {
         if (reaction.partial) await reaction.fetch();
         if (user.bot) return;
         if (!reaction.message.guild) return;
-        if (clientId === user.id) return;
+        if (clientId == user.id) return;
 
         usuarioJaReagiu[user.id] = true;
+
+        if (!reaction.message.guild.members.cache.get(user.id).roles.cache.has(`${ENV.HOST_ROLE_ID}`)) {
+          return;
+        }
 
         if (reaction.message.channel.id === gameChannel.id) {
           if (reaction.emoji.name === reactionEmoji) {
