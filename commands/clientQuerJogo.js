@@ -101,8 +101,10 @@ module.exports = {
         + `${reactionEmoji} ➤  Reaja pros clientes saberem que você quer Hospedar\n\n`
       );
 
+    let channelMessage = null;
+
     try {
-      let channelMessage = await gameChannel.send(`<@&${clientRole}>`, embed);
+      channelMessage = await gameChannel.send(`<@&${clientRole}>`, embed);
       channelMessage.react(reactionEmoji);
       message.delete();
     } catch (err) {
@@ -122,16 +124,15 @@ module.exports = {
         if (!reaction.message.guild) return;
         if (clientId == user.id) return;
 
-        usuarioJaReagiu[user.id] = true;
-
         if (!reaction.message.guild.members.cache.get(user.id).roles.cache.has(`${ENV.HOST_ROLE_ID}`)) {
           return;
         }
 
-        if (reaction.message.channel.id === gameChannel.id) {
+        if (reaction.message.id === channelMessage.id) {
           if (reaction.emoji.name === reactionEmoji) {
             await chatChannel.send(`Alô <@${clientId}>, o host <@${user.id}> quer jogar!`);
           }
+          usuarioJaReagiu[user.id] = true;
         }
 
       });

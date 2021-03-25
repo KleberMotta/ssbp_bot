@@ -112,8 +112,10 @@ module.exports = {
         + `${reactionEmoji} ➤  Reaja pro Host saber que você quer jogar\n\n`
       );
 
+    let channelMessage = null;
+
     try {
-      let channelMessage = await gameChannel.send(`<@&${clientRole}>`, embed);
+      channelMessage = await gameChannel.send(`<@&${clientRole}>`, embed);
       channelMessage.react(reactionEmoji);
       message.delete();
     } catch (err) {
@@ -133,12 +135,11 @@ module.exports = {
         if (!reaction.message.guild) return;
         if (hostId === user.id) return;
 
-        usuarioJaReagiu[user.id] = true;
-
-        if (reaction.message.channel.id === gameChannel.id) {
+        if (reaction.message.id === channelMessage.id) {
           if (reaction.emoji.name === reactionEmoji) {
             await chatChannel.send(`Alô <@${hostId}>, o cliente <@${user.id}> quer jogar!`);
           }
+          usuarioJaReagiu[user.id] = true;
         }
 
       });
