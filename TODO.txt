@@ -1,0 +1,15 @@
+#Features
+
+Comandos:
+
+- Criar comando de ruleset ou usar Floof
+- Cirar aliases dos comandos do server
+- Melhorar a interação para remoção de cargos do Discord - também utilizar o Floof .im <nome do role>
+- Adicionar um timer nas reações de busca de jogo para a pessoa não ser marcada depois de muito tempo
+- Adicionar envio de notificação quando entrar online na twitch
+- Adicionar notificação quando um novo vídeo for adicionado no youtbue
+- Ver o que é possível de fazer com o Floof
+
+Tutoriais:
+ - Como Hospedar jogos no Parsec Arcade utilizando o OBS
+ - Jogar com mais de 4 jogadores no Parsec Arcade
